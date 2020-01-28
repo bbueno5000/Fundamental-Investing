@@ -24,6 +24,8 @@ def key_statistics(stock):
     """
     Definitions:
         pbr - price to book ratio
+        pe12t - trailing price/earnings (12 months)
+        peg5 - price/earnings to growth ratio (5 years expected)
     """
     try:
         source_code = urllib.urlopen('http://finance.yahoo.com' + stock).read()
@@ -34,9 +36,13 @@ def key_statistics(stock):
                 'PEG Ratio (5 yr expected)<font size="-1"><sup>1</sup></font>:</td><td class="yfnc_tabledata1">'
                 )[1].split('</td>')[0]
             if 0 < float(peg5) < 1:
+                pe12t = sourceCode.split(
+                    'Trailing P/E (ttm, intraday):</td><td class="yfnc_tabledata1">'
+                    )[1].split('</td>')[0]
                 print(stock, 'meets requirements')
-                print(pbr)
-                print(peg5)
+                print('Price to book ratio:', pbr)
+                print('PEG forward 5 years', peg5)
+                print('Trailing P/E (12mo):', pe12t)
     except Exception as e:
         print('error:main loop:', str(e))
 
