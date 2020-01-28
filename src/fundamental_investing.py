@@ -46,7 +46,21 @@ def key_statistics(stock):
     except Exception as e:
         print('error:main loop:', str(e))
 
+def parse_russell():
+    tickers = []		
+    try:
+        read_file = open('data/russell3000.txt','r').read()
+        split_file = read_file.split('\n')
+        for line in split_file:
+            split_line = line.split(' ')
+            ticker = split_line[-1]
+            tickers.append(ticker)
+            print(tickers)
+    except Exception as e:
+        print('failed in the main loop', str(e))
+
 if __name__ == '__main__':
-    for stock in sp500short:
-        key_statistics(stock)
-        time.sleep(1)
+    #for stock in sp500short:
+    #    key_statistics(stock)
+    #    time.sleep(1)
+    parse_russell()
