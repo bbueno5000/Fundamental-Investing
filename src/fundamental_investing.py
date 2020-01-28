@@ -27,9 +27,12 @@ def key_statistics(stock):
     try:
         source_code = urllib.urlopen('http://finance.yahoo.com' + stock).read()
         pbr = source_code.split('Price/Book')[1].split('</td>')[0]
-        print('Price/Book:', pbr)
+        if float(pbr) < 0.70:
+            print('Price/Book:', pbr)
     except Exception as e:
-        print('error:main loop:', str(e))
+        print('error:main loop:', stock, str(e))
 
 if __name__ == '__main__':
-    key_statistics('aapl')
+    for stock in sp500short:
+        key_statistics(stock)
+        time.sleep(1)
