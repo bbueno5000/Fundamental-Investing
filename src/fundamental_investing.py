@@ -1,4 +1,8 @@
-
+import matplotlib
+import matplotlib.pyplot as pyplot
+import matplotlib.ticker as mpl_ticker
+import matplotlib.dates as mpl_dates
+import numpy
 import time
 import urllib.request
 
@@ -56,6 +60,16 @@ def grab_quandl(ticker):
         for each_roc in split_roc[1:-1]:
             print(each_roc)
             roc_array.append(each_roc)
+        income_date, income = numpy.loadtxt(
+            net_income_array, 
+            delimiter=',', 
+            unpack=True,
+            converters={0: mdates.strpdate2num('%Y-%m-%d')}
+            )
+        figure = pyplot.figure()
+        axis_1 = pyplot.subplot2grid((6,4), (0,0), rowspan=6, colspan=4)
+        axis_1.plot(income_date,income)
+        pyplot.show()
     except Exception as e:
         print('failed the main quandl loop:', str(e))
 

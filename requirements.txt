@@ -1,0 +1,12 @@
+certifi==2019.11.28
+cycler==0.10.0
+kiwisolver==1.1.0
+matplotlib==3.1.2
+numpy==1.18.1
+pip==19.3.1
+pyparsing==2.4.6
+python-dateutil==2.8.1
+setuptools==44.0.0.post20200106
+six==1.14.0
+wheel==0.33.6
+wincertstore==0.2
