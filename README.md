@@ -15,3 +15,4 @@
 11. [Connecting with Quandl for Annual Earnings Data](https://pythonprogramming.net/connecting-with-quandl/?completed=/completing-basic-stock-screener/)
 12. [Organizing Earnings Data](https://pythonprogramming.net/organizing-earnings-data/?completed=/connecting-with-quandl/)
 13. [Graphing Finance Data](https://pythonprogramming.net/graphing-finance-data-fundamentals/?completed=/organizing-earnings-data/)
+14. [Finishing the Graphing](https://pythonprogramming.net/finishing-fundamental-graphing/?completed=/graphing-finance-data-fundamentals/)

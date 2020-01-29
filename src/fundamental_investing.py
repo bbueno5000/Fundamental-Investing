@@ -66,9 +66,30 @@ def grab_quandl(ticker):
             unpack=True,
             converters={0: mdates.strpdate2num('%Y-%m-%d')}
             )
+        revenue_date, revenue = np.loadtxt(
+             revenue_array, 
+             delimiter=',',
+             unpack=True, 
+             converters={0: mdates.strpdate2num('%Y-%m-%d')}
+             )
+        roc_date, roc = np.loadtxt(
+            roc_array, 
+            delimiter=',',
+            unpack=True,
+            converters={0: mdates.strpdate2num('%Y-%m-%d')}
+            )
         figure = pyplot.figure()
-        axis_1 = pyplot.subplot2grid((6,4), (0,0), rowspan=6, colspan=4)
-        axis_1.plot(income_date,income)
+        axis_1 = pyplot.subplot2grid((6,6), (0,0), rowspan=2, colspan=6)
+        axis_1.plot(income_date, income)
+        pyplot.ylabel('Net Income')
+        axis_2 = pyplot.subplot2grid((6,6), (2,0), sharex=axis_1, rowspan=2, colspan=6)
+        axis_2.plot(revenue_date, revenue)
+        pyplot.ylabel('Revenue')
+        axis_3 = pyplot.subplot2grid((6,6), (4,0), sharex=axis_1, rowspan=2, colspan=6)
+        axis_3.plot(roc_date, roc)
+        pyplot.ylabel('ROC')
+        axis_1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        plt.subplots_adjust(hspace=0.53)
         pyplot.show()
     except Exception as e:
         print('failed the main quandl loop:', str(e))
