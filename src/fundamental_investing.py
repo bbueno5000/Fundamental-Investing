@@ -1,6 +1,6 @@
 
 import time
-import urllib
+import urllib.request
 
 sp500short = [
     'a', 
@@ -20,6 +20,28 @@ sp500short = [
     'rsh'
     ]
 
+def grab_quandl(ticker):
+    endLink = 'sort_order=asc'
+    try:
+        net_income = urllib.request.urlopen(
+            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_NET_INC.csv?&' + endLink
+            ).read()
+        revenue = urllib.request.urlopen(
+            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_REV_LAST.csv?&' + endLink
+            ).read()
+        ROC = urllib.request.urlopen(
+            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_ROC.csv?&' + endLink
+            ).read()
+        print(net_income)
+        print('__________________')
+        print(revenue)
+        print('__________________')
+        print(ROC)
+        print('__________________')
+    except Exception as e:
+        print('failed in the main loop', str(e))
+        pass
+
 def key_statistics(stock):
     """
     Definitions:
@@ -29,7 +51,7 @@ def key_statistics(stock):
         peg5 - price/earnings to growth ratio (5 years expected)
     """
     try:
-        source_code = urllib.urlopen('http://finance.yahoo.com' + stock).read()
+        source_code = urllib.request.urlopen('http://finance.yahoo.com' + stock).read()
         pbr = source_code.split('Price/Book')[1].split('</td>')[0]
         if float(pbr) < 1:
             peg5 = source_code.split(
@@ -68,7 +90,8 @@ def parse_russell():
         pass
 
 if __name__ == '__main__':
-    for stock in sp500short:
-        key_statistics(stock)
-        time.sleep(1)
-    parse_russell()
+    #for stock in sp500short:
+    #    key_statistics(stock)
+    #    time.sleep(1)
+    #parse_russell()
+    grab_quandl('YHOO')

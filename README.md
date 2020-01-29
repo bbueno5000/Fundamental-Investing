@@ -11,3 +11,5 @@
 7. [Getting all Russell 3000 stock tickers](https://pythonprogramming.net/compiling-russell-3000-tickers/?completed=/price-to-earnings-screener/)
 8. [Getting all Russell 3000 stock tickers part 2](https://pythonprogramming.net/compiling-russell-3000-tickers-2/?completed=/compiling-russell-3000-tickers/)
 9. [More stock Screening](https://pythonprogramming.net/more-stock-screening/?completed=/compiling-russell-3000-tickers-2/)
+10. [Completing Basic Stock Screener](https://pythonprogramming.net/completing-basic-stock-screener/?completed=/more-stock-screening/)
+11. [Connecting with Quandl for Annual Earnings Data](https://pythonprogramming.net/connecting-with-quandl/?completed=/completing-basic-stock-screener/)
