@@ -6,23 +6,14 @@ import numpy
 import time
 import urllib.request
 
-sp500short = [
-    'a', 
-    'aa', 
-    'aapl', 
-    'abbv', 
-    'abc', 
-    'abt', 
-    'ace', 
-    'aci', 
-    'acn', 
-    'act', 
-    'adbe', 
-    'adi', 
-    'adm', 
-    'adp',
-    'rsh'
-    ]
+show_charts = raw_input('Would you like to show the financial data (Quandl) charts? (Y/N): ')
+
+if show_charts.lower()=='y':
+    print('okay, charts will be shown')
+elif show_charts.lwoer()=='n':
+    print('okay, charts will NOT be shown.')
+else:
+    print('invalid input, charts will NOT be shown.')
 
 def grab_quandl(ticker):
     """
@@ -89,7 +80,8 @@ def grab_quandl(ticker):
         axis_3.plot(roc_date, roc)
         pyplot.ylabel('ROC')
         axis_1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
-        plt.subplots_adjust(hspace=0.53)
+        pyplot.subplots_adjust(hspace=0.53)
+        pyplot.suptitle(stock)
         pyplot.show()
     except Exception as e:
         print('failed the main quandl loop:', str(e))
@@ -109,7 +101,7 @@ def key_statistics(stock):
             peg5 = source_code.split(
                 'PEG Ratio (5 yr expected)<font size="-1"><sup>1</sup></font>:</td><td class="yfnc_tabledata1">'
                 )[1].split('</td>')[0]
-            if 0 < float(peg5) < 1:
+            if 0 < float(peg5) < 2:
                 de = source_code.split(
                     'Total Debt/Equity (mrq):</td><td class="yfnc_tabledata1">'
                     )[1].split('</td>')[0]
@@ -125,6 +117,8 @@ def key_statistics(stock):
                     print('Trailing PE (12mo):',pe12t)
                     print('Debt to Equity:', de)
                     print('______________________________________')
+                    if showCharts.lower() == 'y':
+                        grab_quandl(stock)
     except Exception as e:
         print('error:main loop:', str(e))
 
