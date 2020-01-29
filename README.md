@@ -17,3 +17,4 @@
 13. [Graphing Finance Data](https://pythonprogramming.net/graphing-finance-data-fundamentals/?completed=/organizing-earnings-data/)
 14. [Finishing the Graphing](https://pythonprogramming.net/finishing-fundamental-graphing/?completed=/graphing-finance-data-fundamentals/)
 15. [Adding the Graphing to the Screener](https://pythonprogramming.net/incorporating-graphing-into-stock-screener/?completed=/finishing-fundamental-graphing/)
+16. [Preparing figure to Accept Finance Data](https://pythonprogramming.net/preparing-figure-for-finance-data/?completed=/incorporating-graphing-into-stock-screener/)

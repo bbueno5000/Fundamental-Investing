@@ -1,12 +1,9 @@
-import matplotlib
-import matplotlib.pyplot as pyplot
-import matplotlib.ticker as mpl_ticker
 import matplotlib.dates as mpl_dates
+import matplotlib.pyplot as pyplot
 import numpy
-import time
 import urllib.request
 
-show_charts = raw_input('Would you like to show the financial data (Quandl) charts? (Y/N): ')
+show_charts = input('Would you like to show the financial data (Quandl) charts? (Y/N): ')
 
 if show_charts.lower()=='y':
     print('okay, charts will be shown')
@@ -26,13 +23,13 @@ def grab_quandl(ticker):
     end_link = 'sort_order=asc'
     try:
         net_income = urllib.request.urlopen(
-            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_NET_INC.csv?&' + endLink
+            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_NET_INC.csv?&' + end_link
             ).read()
         revenue = urllib.request.urlopen(
-            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_REV_LAST.csv?&' + endLink
+            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_REV_LAST.csv?&' + end_link
             ).read()
         roc = urllib.request.urlopen(
-            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_ROC.csv?&' + endLink
+            'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_ROC.csv?&' + end_link
             ).read()
         split_net_income = net_income.split('\n')
         print('Net Income:')
@@ -55,21 +52,20 @@ def grab_quandl(ticker):
             net_income_array, 
             delimiter=',', 
             unpack=True,
-            converters={0: mdates.strpdate2num('%Y-%m-%d')}
+            converters={0: mpl_dates.strpdate2num('%Y-%m-%d')}
             )
-        revenue_date, revenue = np.loadtxt(
-             revenue_array, 
-             delimiter=',',
-             unpack=True, 
-             converters={0: mdates.strpdate2num('%Y-%m-%d')}
-             )
-        roc_date, roc = np.loadtxt(
+        revenue_date, revenue = numpy.loadtxt(
+            revenue_array, 
+            delimiter=',',
+            unpack=True, 
+            converters={0: mpl_dates.strpdate2num('%Y-%m-%d')}
+            )
+        roc_date, roc = numpy.loadtxt(
             roc_array, 
             delimiter=',',
             unpack=True,
-            converters={0: mdates.strpdate2num('%Y-%m-%d')}
+            converters={0: mpl_dates.strpdate2num('%Y-%m-%d')}
             )
-        figure = pyplot.figure()
         axis_1 = pyplot.subplot2grid((6,6), (0,0), rowspan=2, colspan=6)
         axis_1.plot(income_date, income)
         pyplot.ylabel('Net Income')
@@ -79,17 +75,17 @@ def grab_quandl(ticker):
         axis_3 = pyplot.subplot2grid((6,6), (4,0), sharex=axis_1, rowspan=2, colspan=6)
         axis_3.plot(roc_date, roc)
         pyplot.ylabel('ROC')
-        axis_1.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))
+        axis_1.xaxis.set_major_formatter(mpl_dates.DateFormatter('%Y-%m-%d'))
         pyplot.subplots_adjust(hspace=0.53)
-        pyplot.suptitle(stock)
+        pyplot.suptitle(ticker)
         pyplot.show()
-    except Exception as e:
-        print('failed the main quandl loop:', str(e))
+    except Exception as exception:
+        print('failed the main quandl loop:', str(exception))
 
 def key_statistics(stock):
     """
     Definitions:
-        de - debt/equity
+        debt_equity_ratio - debt/equity
         pbr - price to book ratio
         pe12t - trailing price/earnings (12 months)
         peg5 - price/earnings to growth ratio (5 years expected)
@@ -102,25 +98,25 @@ def key_statistics(stock):
                 'PEG Ratio (5 yr expected)<font size="-1"><sup>1</sup></font>:</td><td class="yfnc_tabledata1">'
                 )[1].split('</td>')[0]
             if 0 < float(peg5) < 2:
-                de = source_code.split(
+                debt_equity_ratio = source_code.split(
                     'Total Debt/Equity (mrq):</td><td class="yfnc_tabledata1">'
                     )[1].split('</td>')[0]
-                pe12t = sourceCode.split(
+                pe12t = source_code.split(
                     'Trailing P/E (ttm, intraday):</td><td class="yfnc_tabledata1">'
                     )[1].split('</td>')[0]
-                if float(PE12) < 15:
+                if float(pe12t) < 15:
                     print('______________________________________')
                     print('')
                     print(stock, 'meets requirements')
                     print('price to book:', pbr)
                     print('PEG forward 5 years', peg5)
                     print('Trailing PE (12mo):',pe12t)
-                    print('Debt to Equity:', de)
+                    print('Debt to Equity:', debt_equity_ratio)
                     print('______________________________________')
-                    if showCharts.lower() == 'y':
+                    if show_charts.lower() == 'y':
                         grab_quandl(stock)
-    except Exception as e:
-        print('error:main loop:', str(e))
+    except Exception as exception:
+        print('error:main loop:', str(exception))
 
 def parse_russell():
     tickers = []		
@@ -132,7 +128,7 @@ def parse_russell():
             ticker = split_line[-1]
             tickers.append(ticker)
             print(tickers)
-    except Exception as e:
+    except Exception:
         pass
 
 if __name__ == '__main__':

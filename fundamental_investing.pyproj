@@ -22,6 +22,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="src\charting_stocks.py" />
     <Compile Include="src\fundamental_investing.py" />
   </ItemGroup>
   <ItemGroup>
