@@ -21,7 +21,14 @@ sp500short = [
     ]
 
 def grab_quandl(ticker):
-    endLink = 'sort_order=asc'
+    """
+    Definitions:
+        roc - return on capital
+    """
+    net_income_array = []
+    revenue_array = []
+    roc_array = []
+    end_link = 'sort_order=asc'
     try:
         net_income = urllib.request.urlopen(
             'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_NET_INC.csv?&' + endLink
@@ -29,18 +36,28 @@ def grab_quandl(ticker):
         revenue = urllib.request.urlopen(
             'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_REV_LAST.csv?&' + endLink
             ).read()
-        ROC = urllib.request.urlopen(
+        roc = urllib.request.urlopen(
             'http://www.quandl.com/api/v1/datasets/OFDP/DMDRN_' + ticker + '_ROC.csv?&' + endLink
             ).read()
-        print(net_income)
-        print('__________________')
-        print(revenue)
-        print('__________________')
-        print(ROC)
-        print('__________________')
+        split_net_income = net_income.split('\n')
+        print('Net Income:')
+        for each_net_income in split_net_income[1:-1]:
+            print(each_net_income)
+            net_income_array.append(each_net_income)
+        print('___________')
+        split_revenue = revenue.split('\n')
+        print('Revenue:')
+        for each_revenue in split_revenue[1:-1]:
+            print(each_revenue)
+            revenue_array.append(each_revenue)
+        print('___________')
+        split_roc = roc.split('\n')
+        print('Return On Capital:')
+        for each_roc in split_roc[1:-1]:
+            print(each_roc)
+            roc_array.append(each_roc)
     except Exception as e:
-        print('failed in the main loop', str(e))
-        pass
+        print('failed the main quandl loop:', str(e))
 
 def key_statistics(stock):
     """
