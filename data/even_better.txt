@@ -1,0 +1,1 @@
+'AWH', 'AFAM', 'ACAS', 'ASI', 'NLY', 'ANH', 'AIZ', 'AXS', 'BHLB', 'COF', 'CMO', 'DYN', 'FDEF', 'HMN', 'IM', 'IRDM', 'KMPR', 'LNC', 'LMIA', 'MANT', 'MCGC', 'MRH', 'MVC', 'NAVG', 'OVTI', 'PRE', 'PMC', 'PJC', 'PTP', 'BPOP', 'PL', 'RF', 'SKYW', 'STI', 'SPN', 'SYA', 'TECD', 'TSYS', 'TITN', 'TPC', 'UNM', 'VOXX', 'XL'

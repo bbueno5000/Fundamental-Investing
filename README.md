@@ -10,3 +10,4 @@
 6. [Adding Price to Earnings](https://pythonprogramming.net/price-to-earnings-screener/?completed=/peg-ratio-stock-screener/)
 7. [Getting all Russell 3000 stock tickers](https://pythonprogramming.net/compiling-russell-3000-tickers/?completed=/price-to-earnings-screener/)
 8. [Getting all Russell 3000 stock tickers part 2](https://pythonprogramming.net/compiling-russell-3000-tickers-2/?completed=/compiling-russell-3000-tickers/)
+9. [More stock Screening](https://pythonprogramming.net/more-stock-screening/?completed=/compiling-russell-3000-tickers-2/)
