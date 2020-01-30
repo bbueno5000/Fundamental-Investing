@@ -1,4 +1,5 @@
 ﻿import datetime
+import fundamental_investing
 import matplotlib
 import matplotlib.dates as mpl_dates
 import matplotlib.pyplot as pyplot
@@ -11,7 +12,7 @@ import urllib
 
 matplotlib.rcParams.update({'font.size': 9})
 
-each_stock = 'EBAY', 'AAPL', 'TSLA'
+each_ticker_symbol = 'EBAY', 'AAPL', 'TSLA'
 
 class ChartingStocks:
 
@@ -21,7 +22,6 @@ class ChartingStocks:
 
             Definitions:
                 macd - moving average convergence/divergence
-                ema - exponential moving average
                 macd line = 12 ema - 26 ema
                 signal line = 9 ema of macd line
                 histogram = macd line - signal line
@@ -29,9 +29,13 @@ class ChartingStocks:
             Returns:
                 len(x) arrays: value is emaslow, emafast, macd
             """
-            ema_slow = self.exponential_moving_average(x, slow)
-            ema_fast = self.exponential_moving_average(x, fast)
-            return ema_slow, ema_fast, ema_fast - ema_slow
+            exponential_moving_average_slow = self.exponential_moving_average(x, slow)
+            exponential_moving_average_fast = self.exponential_moving_average(x, fast)
+            return (
+                exponential_moving_average_slow, 
+                exponential_moving_average_fast, 
+                exponential_moving_average_fast - exponential_moving_average_slow
+                )
 
     def exponential_moving_average(self, values, window):
         weights = numpy.exp(numpy.linspace(-1.0, 0.0, window))
@@ -44,11 +48,21 @@ class ChartingStocks:
         exponential_moving_average[:window] = exponential_moving_average[window]
         return exponential_moving_average
 
-    def graph_data(self, stock, moving_average_1, moving_average_2):
+    def graph_data(self, ticker_symbol, moving_average_1, moving_average_2):
         try:
-            print('Currently pulling:', stock)
-            url_to_visit = 'http://chartapi.finance.yahoo.com/instrument/1.0/' + stock + '/chartdata;type=quote;range=10y/csv'
-            stock_file = []
+            (revenue_date, 
+             revenue, 
+             return_on_capital_date, 
+             return_on_capital, 
+             income_date, 
+             income) = fundamental_investing.grab_quandl(ticker_symbol)
+            print(str(datetime.datetime.fromtimestamp(int(time.time())).strftime('%Y-%m-%d %H:%M:%S')))
+            url_to_visit = (
+                'http://chartapi.finance.yahoo.com/instrument/1.0/' 
+                + ticker_symbol 
+                + '/chartdata;type=quote;range=10y/csv'
+                )
+            ticker_symbol_file = []
             try:
                 source_code = urllib.request.urlopen(url_to_visit).read().decode()
                 split_source = source_code.split('\n')
@@ -56,13 +70,13 @@ class ChartingStocks:
                     split_line = each_line.split(',')
                     if len(split_line) == 6:
                         if 'values' not in each_line:
-                            stock_file.append(each_line)
+                            ticker_symbol_file.append(each_line)
             except Exception as exception:
                 print(str(exception), ':Failed to organize pulled data.')
         except Exception as exception:
             print(str(exception), ':Failed to pull pricing data')
             date, close_price, high_price, low_price, open_price, volume = numpy.loadtxt(
-                stock_file, 
+                ticker_symbol_file, 
                 delimiter=',', 
                 unpack=True, 
                 converters={0: mpl_dates.strpdate2num('%Y%m%d')}
@@ -253,8 +267,12 @@ class ChartingStocks:
             axis_3.spines['right'].set_color("#5998ff")
             axis_3.tick_params(axis='x', colors='w')
             axis_3.tick_params(axis='y', colors='w')
-            axis_3.yaxis.set_major_locator(mpl_ticker.MaxNLocator(nbins=4, prune='upper'))
-            axis_3.grid(True)
+            axis_3.plot(income_date, income, '#4ee6FD')
+            pyplot.plot('N.I.', color='w')
+            axis_3.grid(True, color='w')
+            axis_3.yaxis.set_major_locator(
+                mpl_ticker.MaxNLocator(nbins=4, prune='upper')
+                )
             #axis 4
             axis_4 = pyplot.subplot2grid(
                 (9,4), 
@@ -270,10 +288,12 @@ class ChartingStocks:
             axis_4.spines['right'].set_color("#5998ff")
             axis_4.tick_params(axis='x', colors='w')
             axis_4.tick_params(axis='y', colors='w')
+            axis_4.plot(revenue_date, revenue, '#4ee6FD')
+            pyplot.plot('Rev.', color='w')
+            axis_4.grid(True, color='w')
             axis_4.yaxis.set_major_locator(
                 mpl_ticker.MaxNLocator(nbins=4, prune='upper')
                 )
-            axis_4.grid(True)
             # axis 5
             axis_5 = pyplot.subplot2grid(
                 (9,4), 
@@ -289,14 +309,16 @@ class ChartingStocks:
             axis_5.spines['right'].set_color("#5998ff")
             axis_5.tick_params(axis='x', colors='w')
             axis_5.tick_params(axis='y', colors='w')
+            axis_5.plot(return_on_capital_date, return_on_capital, '#4ee6FD')
+            pyplot.plot('R.O.C.', color='w')
+            axis_5.grid(True, color='w')
             axis_5.yaxis.set_major_locator(
                 mpl_ticker.MaxNLocator(nbins=4, prune='upper')
                 )
-            axis_5.grid(True)
             for label in axis_5.xaxis.get_ticklabels():
                 label.set_rotation(45)
             # super
-            pyplot.suptitle(stock, color='w')
+            pyplot.suptitle(ticker_symbol, color='w')
             pyplot.setp(axis_0.get_xticklabels(), visible=False)
             pyplot.setp(axis_1.get_xticklabels(), visible=False)
             pyplot.setp(axis_2.get_xticklabels(), visible=False)
