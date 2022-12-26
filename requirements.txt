@@ -16,6 +16,6 @@ python-dateutil==2.8.1
 setuptools==44.0.0.post20200106
 six==1.14.0
 typed-ast==1.4.1
-wheel==0.33.6
+wheel==0.38.1
 wincertstore==0.2
 wrapt==1.11.2
